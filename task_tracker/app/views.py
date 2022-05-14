@@ -12,7 +12,7 @@ from .producer import Producer
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def filter_queryset(self, queryset):
         queryset = queryset.filter(user_id=self.request.user.uuid, status=Task.STATUS_OPEN)
@@ -47,7 +47,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 
 class TaskReassigns(views.APIView):
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         task_ids = Task.objects.filter(status=Task.STATUS_OPEN).values_list('uuid', flat=True)
@@ -65,7 +65,7 @@ class TaskReassigns(views.APIView):
 class TaskClose(generics.UpdateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskCloseSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_update(self, serializer):
         obj = serializer.save()
